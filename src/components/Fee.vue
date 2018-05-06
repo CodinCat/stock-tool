@@ -5,30 +5,19 @@
       <label>手續費折扣：<input type="number" step="0.05" v-model="discount"></label>
     </div>
     <div class="form-wrapper">
-      <div class="section">
-        <h3>買進</h3>
-        <div class="input-column">
-          <label>股價：<input type="number" step="0.1" v-model="buyPrice"></label>
-        </div>
-        <div class="input-column">
-          <label>張數：<input type="number" step="1" v-model="buyQuantity"></label>
-        </div>
-        <div class="input-column bold">
-          費用：{{ buyTotal.toLocaleString() }}
-        </div>
-      </div>
-      <div class="section">
-        <h3>賣出</h3>
-        <div class="input-column">
-          <label>股價：<input type="number" step="0.1" v-model="sellPrice"></label>
-        </div>
-        <div class="input-column">
-          <label>張數：<input type="number" step="1" v-model="sellQuantity"></label>
-        </div>
-        <div class="input-column bold">
-          費用：{{ sellTotal.toLocaleString() }}
-        </div>
-      </div>
+      <TradingForm
+        title="買進"
+        :price.sync="buyPrice"
+        :quantity.sync="buyQuantity"
+      />
+      <TradingForm
+        title="賣出"
+        :price.sync="sellPrice"
+        :quantity.sync="sellQuantity"
+      />
+    </div>
+    <div>
+      每張獲利：{{ earningPer1 }}
     </div>
     <div class="fees">
       <div>買進手續費：{{ buyFee }}</div>
@@ -40,7 +29,12 @@
 </template>
 
 <script>
+import TradingForm from './TradingForm'
+
 export default {
+  components: {
+    TradingForm,
+  },
   data() {
     return {
       buyPrice: 50.5,
@@ -62,6 +56,9 @@ export default {
     sellTotal() {
       return this.sellPrice * this.sellQuantity * 1000
     },
+    earningPer1() {
+      return Math.round((this.sellPrice - this.buyPrice) * 1000)
+    },
     buyFee() {
       return this.calcFee(this.buyTotal)
     },
@@ -75,7 +72,7 @@ export default {
 }
 </script>
 
-<style scoped>
+<style>
 input {
   border: 1px solid silver;
   font-size: 14px;
@@ -88,14 +85,11 @@ input:focus {
 }
 .form-wrapper {
   display: flex;
-  margin-bottom: 20px;
-}
-.section {
-  width: 50%;
 }
 .fees {
   border-top: 1px solid silver;
   padding-top: 20px;
+  margin-top: 20px;
 }
 .input-column {
   margin: 10px 0;
