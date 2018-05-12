@@ -1,37 +1,46 @@
 <template>
   <div class="section">
     <h3>{{ title }}</h3>
-    <div class="input-column">
-      <label>
-        股價：
-        <input type="number" step="0.1" :value="price" @input="updatePrice">
-      </label>
-    </div>
-    <div class="input-column">
-      <label>
-        張數：
-        <input type="number" step="1" :value="quantity" @input="updateQuantity">
-      </label>
-    </div>
-    <div class="input-column bold">
+    <LabelInput
+      type="number"
+      step="0.1"
+      label="股價："
+      :value="price"
+      @input="updatePrice"
+    />
+    <LabelInput
+      type="number"
+      step="1"
+      label="張數："
+      :value="quantity"
+      @input="updateQuantity"
+    />
+    <InputColumn class="bold">
       合計：{{ total.toLocaleString() }}
-    </div>
+    </InputColumn>
   </div>
 </template>
 
 <script>
+import LabelInput from './LabelInput'
+import InputColumn from './InputColumn'
+
 export default {
+  components: {
+    LabelInput,
+    InputColumn,
+  },
   props: {
     title: String,
     price: Number,
     quantity: Number,
   },
   methods: {
-    updatePrice(e) {
-      this.$emit('update:price', e.target.valueAsNumber)
+    updatePrice(value, event) {
+      this.$emit('update:price', event.target.valueAsNumber)
     },
-    updateQuantity(e) {
-      this.$emit('update:quantity', e.target.valueAsNumber)
+    updateQuantity(value, event) {
+      this.$emit('update:quantity', event.target.valueAsNumber)
     },
   },
   computed: {

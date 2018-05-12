@@ -1,10 +1,18 @@
 <template>
   <div>
-    <h2>費用</h2>
-    <div class="input-column">
-      <label>手續費折扣：<input type="number" step="0.05" v-model="discount"></label>
-      <label class="bind-quantity"><input type="checkbox" v-model="bindQuantity">綁定張數</label>
-    </div>
+    <h2>快速試算</h2>
+    <InputColumn>
+      <LabelInput
+        type="number"
+        step="0.05"
+        label="手續費折扣："
+        v-model.number="discount"
+      >
+        <label class="bind-quantity">
+          <input type="checkbox" v-model="bindQuantity">綁定張數
+        </label>
+      </LabelInput>
+    </InputColumn>
     <div class="form-wrapper">
       <TradingForm
         title="買進"
@@ -32,21 +40,33 @@
 </template>
 
 <script>
+import InputColumn from './InputColumn'
+import LabelInput from './LabelInput'
 import TradingForm from './TradingForm'
+
+const STORAGE_KEY = 'FEE'
 
 export default {
   components: {
     TradingForm,
+    InputColumn,
+    LabelInput,
   },
   data() {
-    return {
-      discount: 0.6,
-      bindQuantity: true,
-      buyPrice: 50.5,
-      buyQuantity: 10,
-      sellPrice: 50.5,
-      sellQuantity: 10,
-    }
+    const savedData = JSON.parse(localStorage.getItem(STORAGE_KEY))
+    return (
+      savedData || {
+        discount: 0.6,
+        bindQuantity: true,
+        buyPrice: 50.5,
+        buyQuantity: 10,
+        sellPrice: 50.5,
+        sellQuantity: 10,
+      }
+    )
+  },
+  updated() {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(this.$data))
   },
   methods: {
     calcFee(totalPrice) {
@@ -118,9 +138,6 @@ input:focus {
   border-top: 1px solid silver;
   padding-top: 20px;
   margin-top: 20px;
-}
-.input-column {
-  margin: 10px 0;
 }
 .net-profit {
   font-size: 18px;
