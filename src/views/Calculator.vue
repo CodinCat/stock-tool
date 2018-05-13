@@ -19,7 +19,7 @@
         </label>
       </LabelInput>
     </InputColumn>
-    <div class="form-wrapper">
+    <Flex>
       <TradingForm
         title="買進"
         :price="buyPrice"
@@ -34,7 +34,7 @@
         @update:price="setSellPrice"
         @update:quantity="setSellQuantity"
       />
-    </div>
+    </Flex>
     <div>每張獲利：{{ earningPer1.toLocaleString() }}</div>
     <div>總獲利：{{ totalEarning.toLocaleString() }}</div>
     <div class="fees">
@@ -51,6 +51,7 @@
 
 <script>
 import { mapState, mapMutations, mapGetters } from 'vuex'
+import Flex from '../components/Flex'
 import InputColumn from '../components/InputColumn'
 import LabelInput from '../components/LabelInput'
 import TradingForm from '../components/TradingForm'
@@ -59,6 +60,7 @@ const STORAGE_KEY = 'CALCULATOR'
 
 export default {
   components: {
+    Flex,
     TradingForm,
     InputColumn,
     LabelInput,
@@ -101,24 +103,8 @@ export default {
 </script>
 
 <style>
-input {
-  border: 1px solid silver;
-  font-size: 14px;
-  height: 22px;
-  padding: 4px;
-  outline: 0;
-}
-input[type='checkbox'] {
-  vertical-align: text-bottom;
-}
-input:focus {
-  border-color: cadetblue;
-}
 .bind-quantity {
   margin-left: 12px;
-}
-.form-wrapper {
-  display: flex;
 }
 .fees {
   border-top: 1px solid silver;
