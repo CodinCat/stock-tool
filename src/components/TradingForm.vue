@@ -36,11 +36,11 @@ export default {
     quantity: Number,
   },
   methods: {
-    updatePrice(value, event) {
-      this.$emit('update:price', event.target.valueAsNumber)
+    updatePrice(value) {
+      this.$emit('update:price', value)
     },
-    updateQuantity(value, event) {
-      this.$emit('update:quantity', event.target.valueAsNumber)
+    updateQuantity(value) {
+      this.$emit('update:quantity', value)
     },
   },
   computed: {

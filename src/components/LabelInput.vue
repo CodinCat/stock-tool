@@ -4,8 +4,8 @@
       {{ label }}
       <input
         :value="value"
-        @input="$emit('input', $event.target.value, $event)"
         v-bind="$attrs"
+        v-on="listeners"
       >
     </label>
     <slot></slot>
@@ -20,5 +20,20 @@ export default {
     InputColumn,
   },
   props: ['label', 'value'],
+  computed: {
+    listeners() {
+      return {
+        ...this.$listeners,
+        input: event => {
+          this.$emit(
+            'input',
+            this.$attrs.type === 'number'
+              ? event.target.valueAsNumber
+              : event.target.value
+          )
+        },
+      }
+    },
+  },
 }
 </script>
